@@ -16,39 +16,15 @@
 </template>
 
 <script>
+import Links from '../../data/links';
 export default {
   data() {
     return {
-      tasks: [
-        {
-          id: 1,
-          title: 'Go to shop',
-          dueDate: '2020/08/25',
-          dueTime: '15:30',
-          priority: 1,
-          status: false
-        },
-        {
-          id: 2,
-          title: 'Get Bananas',
-          dueDate: '2020/08/25',
-          dueTime: '15:30',
-          priority: 2,
-          status: false
-        },
-        {
-          id: 3,
-          title: 'Get More Apples',
-          dueDate: '2020/08/26',
-          dueTime: '18:30',
-          priority: 2,
-          status: false
-        },
-      ]
+      tasks: Links.getTasks(),
     }
   },
   components: {
-    'task': require('components/vue-basics/Task').default
+    'task': require('components/vue-basics/Task').default,
   },
   methods: {
     markComplete(id) {
