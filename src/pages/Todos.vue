@@ -19,15 +19,13 @@
 </template>
 
 <script>
-import Links from '../data/links';
+import { mapGetters } from 'vuex';
 export default {
-  data() {
-    return {
-      todos: Links.getTodos(),
-    }
-  },
   components: {
     'todo': require('components/Todo').default,
+  },
+  computed: {
+    ...mapGetters('todos', ["todos"])
   },
   methods: {
     todoComplete(id) {
