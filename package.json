@@ -13,7 +13,9 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.18.1",
     "core-js": "^3.6.5",
-    "quasar": "^1.0.0"
+    "node-sass": "^4.14.1",
+    "quasar": "^1.0.0",
+    "sass-loader": "^9.0.3"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
