@@ -37,7 +37,7 @@
 
 <script>
 export default {
-  props: ['todo'],
+  props: ['todo', 'index'],
   methods: {
     markComplete() {
       this.$emit('todo-complete');

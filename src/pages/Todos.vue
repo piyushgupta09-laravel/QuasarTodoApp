@@ -5,9 +5,9 @@
       bordered
     >
       <todo
-        v-for="(todo, index) in todos"
-        :key="todo.id"
-        :index='index'
+        v-for="(todo, key) in todos"
+        :key="key"
+        :index='key'
         :todo='todo'
         v-on:todo-complete='todoComplete($event)'
         v-on:todo-delete='todoDelete($event)'
