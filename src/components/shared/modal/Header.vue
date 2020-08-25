@@ -1,0 +1,12 @@
+<template>
+  <q-card-section class="row justify-between bg-primary text-white">
+    <div class="text-h6">
+      <slot></slot>
+    </div>
+    <q-btn flat round dense icon="close" v-close-popup />
+    </q-card-section>
+</template>
+
+<script>
+export default {}
+</script>
