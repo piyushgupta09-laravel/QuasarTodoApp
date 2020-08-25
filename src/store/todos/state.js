@@ -19,7 +19,7 @@ export default {
       dueDate: "2020/08/26",
       dueTime: "18:30",
       priority: "high",
-      status: false
+      status: true
     },
     ID4: {
       title: "Get some vegitables",

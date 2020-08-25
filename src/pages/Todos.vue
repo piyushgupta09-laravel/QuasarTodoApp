@@ -1,22 +1,20 @@
 <template>
   <q-page padding>
 
-    <!-- Todos List -->
-    <q-list v-if="Object.keys(todos).length" separator bordered>
-      <todo-item
-        v-for="(todo, key) in todos"
-        :key="key"
-        :id='key'
-        :todo='todo'
-      >
-        {{ todo.title }}
-      </todo-item>
-    </q-list>
+    <todo-list title="Pending" :todos="pendTodos" />
 
-    <div v-else class="absolute-center text-h6 text-center text-amber-13">
+    <todo-list title="Completed" :todos="doneTodos" />
+
+    <div
+      v-if="!Object.keys(pendTodos).length && !Object.keys(doneTodos).length"
+      class="absolute-center text-center text-amber-13"
+    >
       <q-avatar icon="mood" size="6rem" color="text-amber-10" />
-      <br>No task pending.
-      <br>Why not add some more todos ..
+      <p style="font-size: 18px; margin-bottom: 0px">
+        Hurray !!
+        <br>No task to do
+        <br>Why not add some tasks
+      </p>
     </div>
 
     <div class="absolute-bottom-right q-ma-lg">
@@ -52,11 +50,11 @@ export default {
     }
   },
   components: {
-    'todo-item': require('components/todo/Item').default,
+    'todo-list': require('components/todo/List').default,
     'create-todo-form': require('components/todo/CreateForm').default,
   },
   computed: {
-    ...mapGetters('todos', ["todos"])
+    ...mapGetters('todos', ["doneTodos", "pendTodos"])
   },
 }
 </script>
