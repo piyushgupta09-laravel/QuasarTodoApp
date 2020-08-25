@@ -11,5 +11,8 @@ export default {
   },
   setSearch(state, query) {
     state.search = query;
+  },
+  setSort(state, value) {
+    state.sort = value;
   }
 };

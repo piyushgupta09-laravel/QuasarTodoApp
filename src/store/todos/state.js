@@ -1,4 +1,5 @@
 export default {
+  sort: "title",
   search: "",
   todos: {
     ID1: {

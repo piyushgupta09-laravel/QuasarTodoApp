@@ -1,10 +1,11 @@
 <template>
   <q-page padding>
 
-    <!-- SEARCH -->
+    <!-- SEARCH & SORT -->
     <div>
       <div class="row">
         <todo-search></todo-search>
+        <todo-sort></todo-sort>
       </div>
       <p
         class="text-overline text-center"
@@ -70,6 +71,7 @@ export default {
   },
   components: {
     'todo-search': require('components/shared/tools/Search').default,
+    'todo-sort': require('components/shared/tools/Sort').default,
     'todo-list': require('components/todo/List').default,
     'create-todo-form': require('components/todo/CreateForm').default,
   },
