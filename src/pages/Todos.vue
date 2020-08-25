@@ -1,20 +1,39 @@
 <template>
   <q-page padding>
 
-    <todo-list title="Pending" :todos="pendTodos" />
-
-    <todo-list title="Completed" :todos="doneTodos" />
-
-    <div
-      v-if="!Object.keys(pendTodos).length && !Object.keys(doneTodos).length"
-      class="absolute-center text-center text-amber-13"
-    >
-      <q-avatar icon="mood" size="6rem" color="text-amber-10" />
-      <p style="font-size: 18px; margin-bottom: 0px">
-        Hurray !!
-        <br>No task to do
-        <br>Why not add some tasks
+    <!-- SEARCH -->
+    <div>
+      <div class="row">
+        <todo-search></todo-search>
+      </div>
+      <p
+        class="text-overline text-center"
+        v-if="showEmptySearchResult"
+      >
+        No search result
       </p>
+    </div>
+
+    <!-- PENDING LISTS -->
+    <todo-list
+      v-if="!showEmptyTodosList && !showEmptySearchResult"
+      title="Pending"
+      :todos="pendTodos"
+      :count="showPendingTodosList"
+    />
+
+    <!-- DONE LIST -->
+    <todo-list
+      v-if="!showEmptyTodosList && !showEmptySearchResult"
+      title="Completed"
+      :todos="doneTodos"
+      :count="showDoneTodosList"
+    />
+
+    <!-- EMPTY -->
+    <div v-if="showEmptyTodosList"
+      class="absolute-center text-h6 text-center text-grey-5">
+      Lets get started
     </div>
 
     <div class="absolute-bottom-right q-ma-lg">
@@ -25,15 +44,15 @@
         color="primary"
         size="1rem"
         icon="add"
-        @click="displayForm = true" />
+        @click="toggleFormDisplay(true)" />
 
       <!-- DIALOG -->
       <q-dialog
-        v-model="displayForm"
+        v-model="addTodoForm"
         persistent
         transition-show="scale"
         transition-hide="scale">
-        <create-todo-form @closeModal="displayForm = false" />
+        <create-todo-form @closeModal="toggleFormDisplay(false)" />
       </q-dialog>
 
     </div>
@@ -42,20 +61,46 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      displayForm: false
+      addTodoForm: false
     }
   },
   components: {
+    'todo-search': require('components/shared/tools/Search').default,
     'todo-list': require('components/todo/List').default,
     'create-todo-form': require('components/todo/CreateForm').default,
   },
   computed: {
-    ...mapGetters('todos', ["doneTodos", "pendTodos"])
+    ...mapGetters('todos', ["doneTodos", "pendTodos"]),
+    ...mapState('todos', ["search"]),
+    showDoneTodosList() {
+      return Object.keys(this.doneTodos).length;
+    },
+    showPendingTodosList() {
+      return Object.keys(this.pendTodos).length;
+    },
+    showEmptySearchResult() {
+      if (this.search) {
+        if (!this.showDoneTodosList && !this.showPendingTodosList) {
+          return true;
+        }
+      }
+      return false;
+    },
+    showEmptyTodosList() {
+      return !this.showEmptySearchResult
+              && !this.showDoneTodosList
+              && !this.showPendingTodosList;
+    },
   },
+  methods: {
+    toggleFormDisplay(state) {
+      this.addTodoForm = state;
+    }
+  }
 }
 </script>
 

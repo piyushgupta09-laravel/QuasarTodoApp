@@ -8,5 +8,8 @@ export default {
   },
   todoDelete(state, payload) {
     Vue.delete(state.todos, payload.id);
+  },
+  setSearch(state, query) {
+    state.search = query;
   }
 };

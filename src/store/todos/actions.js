@@ -10,5 +10,8 @@ export default {
   },
   todoDelete({ commit }, payload) {
     commit("todoDelete", payload);
+  },
+  setSearch({ commit }, query) {
+    commit("setSearch", query);
   }
 };

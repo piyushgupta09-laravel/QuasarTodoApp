@@ -1,4 +1,5 @@
 export default {
+  search: "",
   todos: {
     ID1: {
       title: "Go to shop",
