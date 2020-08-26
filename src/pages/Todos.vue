@@ -1,63 +1,70 @@
 <template>
-  <q-page padding>
+  <q-page>
+    <div class="q-pa-md absolute full-width full-height column">
 
-    <!-- SEARCH & SORT -->
-    <div>
-      <div class="row">
-        <todo-search></todo-search>
-        <todo-sort></todo-sort>
+      <!-- SEARCH & SORT -->
+      <div>
+        <div class="row">
+          <todo-search></todo-search>
+          <todo-sort></todo-sort>
+        </div>
+        <p
+          class="text-overline text-center"
+          v-if="showEmptySearchResult"
+        >
+          No search result
+        </p>
       </div>
-      <p
-        class="text-overline text-center"
-        v-if="showEmptySearchResult"
-      >
-        No search result
-      </p>
+
+      <q-scroll-area class="q-scroll-area">
+
+        <!-- PENDING LISTS -->
+        <todo-list
+          v-if="!showEmptyTodosList && !showEmptySearchResult"
+          title="Pending"
+          :todos="pendTodos"
+          :count="showPendingTodosList"
+        />
+
+        <!-- DONE LIST -->
+        <todo-list
+          v-if="!showEmptyTodosList && !showEmptySearchResult"
+          title="Completed"
+          :todos="doneTodos"
+          :count="showDoneTodosList"
+        />
+
+      </q-scroll-area>
+
+      <!-- EMPTY -->
+      <div v-if="showEmptyTodosList"
+        class="absolute-center text-h6 text-center text-grey-5">
+        Lets get started
+      </div>
+
+      <div class="absolute-bottom-right q-ma-lg">
+
+        <!-- BUTTON -->
+        <q-btn
+          round
+          color="primary"
+          size="1rem"
+          icon="add"
+          @click="toggleFormDisplay(true)"
+        />
+
+        <!-- DIALOG -->
+        <q-dialog
+          v-model="addTodoForm"
+          persistent
+          transition-show="scale"
+          transition-hide="scale">
+          <create-todo-form @closeModal="toggleFormDisplay(false)" />
+        </q-dialog>
+
+      </div>
+
     </div>
-
-    <!-- PENDING LISTS -->
-    <todo-list
-      v-if="!showEmptyTodosList && !showEmptySearchResult"
-      title="Pending"
-      :todos="pendTodos"
-      :count="showPendingTodosList"
-    />
-
-    <!-- DONE LIST -->
-    <todo-list
-      v-if="!showEmptyTodosList && !showEmptySearchResult"
-      title="Completed"
-      :todos="doneTodos"
-      :count="showDoneTodosList"
-    />
-
-    <!-- EMPTY -->
-    <div v-if="showEmptyTodosList"
-      class="absolute-center text-h6 text-center text-grey-5">
-      Lets get started
-    </div>
-
-    <div class="absolute-bottom-right q-ma-lg">
-
-      <!-- BUTTON -->
-      <q-btn
-        round
-        color="primary"
-        size="1rem"
-        icon="add"
-        @click="toggleFormDisplay(true)" />
-
-      <!-- DIALOG -->
-      <q-dialog
-        v-model="addTodoForm"
-        persistent
-        transition-show="scale"
-        transition-hide="scale">
-        <create-todo-form @closeModal="toggleFormDisplay(false)" />
-      </q-dialog>
-
-    </div>
-
   </q-page>
 </template>
 
@@ -107,6 +114,10 @@ export default {
 </script>
 
 <style scoped>
+.q-scroll-area {
+  display: flex;
+  flex: 1;
+}
 .list {
   max-width: 400px;
 }
