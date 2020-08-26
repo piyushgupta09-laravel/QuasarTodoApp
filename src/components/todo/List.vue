@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <transition
+    appear
+    enter-active-class="animated zoomIn"
+    leave-active-class="animated zoomOut"
+  >
     <div v-if="count > 0">
       <list-header :count="count" :title="title" />
       <q-list separator bordered>
@@ -16,7 +20,7 @@
     <div v-else>
       <list-header>No {{ title }} tasks</list-header>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>

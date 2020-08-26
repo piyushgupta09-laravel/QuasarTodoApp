@@ -110,4 +110,14 @@ export default {
 .list {
   max-width: 400px;
 }
+.modal-size-medium {
+  width: 500px;
+  max-width: 80vw;
+}
+.q-input {
+  margin-bottom: 1rem;
+}
+.split-2 {
+  width: 45%;
+}
 </style>

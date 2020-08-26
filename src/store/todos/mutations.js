@@ -1,10 +1,10 @@
 import Vue from "vue";
 export default {
   todoCreate(state, payload) {
-    Vue.set(state.todos, payload.id, payload.todo);
+    Vue.set(state.todos, payload.id, payload.data);
   },
   todoUpdate(state, payload) {
-    Object.assign(state.todos[payload.id], payload.updates);
+    Object.assign(state.todos[payload.id], payload.data);
   },
   todoDelete(state, payload) {
     Vue.delete(state.todos, payload.id);

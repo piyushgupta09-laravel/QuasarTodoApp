@@ -1,8 +1,5 @@
-import { uid } from "quasar";
-
 export default {
-  todoCreate({ commit }, todo) {
-    let payload = { id: uid(), todo: todo };
+  todoCreate({ commit }, payload) {
     commit("todoCreate", payload);
   },
   todoUpdate({ commit }, payload) {

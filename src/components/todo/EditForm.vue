@@ -31,75 +31,21 @@
 <script>
 import { mapActions } from 'vuex';
 import { date } from 'quasar'
-
+import mixinTodoCreateEdit from 'src/mixins/todo-create-edit';
 export default {
   props: ['id', 'todo'],
-  components: {
-    'model-header': require('components/shared/modal/Header').default,
-    'input-text': require('components/shared/form/InputText').default,
-    'input-date': require('components/shared/form/InputDate').default,
-    'input-time': require('components/shared/form/InputTime').default,
-    'input-radio': require('components/shared/form/InputRadio').default,
-    'model-footer': require('components/shared/modal/Footer').default,
-  },
+  mixins: [mixinTodoCreateEdit],
   mounted() {
     this.form = Object.assign({}, this.todo)
   },
-  data() {
-    return {
-      form: {},
-      inputOptions: {
-        'none': { name: 'Regular', color: 'grey'},
-        'low': { name: 'Remember', color: 'blue'},
-        'mid': { name: 'Important', color: 'amber'},
-        'high': { name: 'Very Important', color: 'red'},
-      }
-    }
-  },
   methods: {
     ...mapActions('todos', ["todoUpdate"]),
-    validateFormInput() {
-      if(this.form.dueDate == '') {
-        this.form.dueTime == '';
-      }
-      this.$refs.title.$refs.inputText.validate();
-      if (!this.$refs.title.$refs.inputText.hasError) {
-        this.todoUpdate({
-          id: this.id,
-          updates: this.form
-        });
-        this.$emit('closeModal');
-      }
+    submitForm() {
+      this.todoUpdate({
+        id: this.id,
+        data: this.form
+      });
     },
-    resetForm(feild) {
-      switch (feild) {
-        case 'title': this.form.title = ''; break;
-        case 'dueDate': this.form.dueDate = ''; break;
-        case 'dueTime': this.form.dueTime = ''; break;
-        default: this.form = {
-                  title: '',
-                  dueDate: '',
-                  dueTime: '',
-                  priority: 'none',
-                  status: false,
-                };
-                break;
-      }
-      this.$refs.title.$refs.inputText.resetValidation()
-    }
   }
 }
 </script>
-
-<style>
-.modal-size-medium {
-  width: 500px;
-  max-width: 80vw;
-}
-.q-input {
-  margin-bottom: 1rem;
-}
-.split-2 {
-  width: 45%;
-}
-</style>

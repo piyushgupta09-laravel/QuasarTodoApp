@@ -1,89 +1,95 @@
 <template>
-  <q-item
-    clickable
-    v-ripple
-    @click="markCompleted"
-    :class="todo.priority"
-    v-touch-hold:1000.mouse="showDialogForm"
+  <transition
+    appear
+    enter-active-class="animated zoomIn"
+    leave-active-class="animated zoomOut"
   >
-    <!-- CHECKBOX -->
-    <q-item-section side top>
-      <q-checkbox :value="todo.status" />
-    </q-item-section>
+    <q-item
+      clickable
+      v-ripple
+      @click="markCompleted"
+      :class="todo.priority"
+      v-touch-hold:1000.mouse="showDialogForm"
+    >
+      <!-- CHECKBOX -->
+      <q-item-section side top>
+        <q-checkbox :value="todo.status" />
+      </q-item-section>
 
-    <!-- TODO TITLE -->
-    <q-item-section>
-      <q-item-label
-        class="text-subtitle1"
-        :class="{'completed' : todo.status }"
-        v-html="$options.filters.searchHighlight(todo.title, search)"
-      />
-      <q-item-label caption class="text-uppercase">
-        overdue
-      </q-item-label>
-    </q-item-section>
+      <!-- TODO TITLE -->
+      <q-item-section>
+        <q-item-label
+          class="text-subtitle1"
+          :class="{'completed' : todo.status }"
+          v-html="$options.filters.searchHighlight(todo.title, search)"
+        />
+        <q-item-label caption class="text-uppercase">
+          overdue
+        </q-item-label>
+      </q-item-section>
 
-    <!-- DUE-DATE & DUE-TIME -->
-    <q-item-section side top v-if="todo.dueDate">
-      <q-item-label caption>
-        {{ todo.dueDate | shortDate }}
-        <q-icon name="event" size="1rem"/>
-      </q-item-label>
-      <q-item-label caption>
-        {{ todo.dueTime }}
-        <q-icon name="schedule" size="1rem"/>
-      </q-item-label>
-    </q-item-section>
+      <!-- DUE-DATE & DUE-TIME -->
+      <q-item-section side top v-if="todo.dueDate">
+        <q-item-label caption>
+          {{ todo.dueDate | shortDate }}
+          <q-icon name="event" size="1rem"/>
+        </q-item-label>
+        <q-item-label caption>
+          {{ todo.dueTime }}
+          <q-icon name="schedule" size="1rem"/>
+        </q-item-label>
+      </q-item-section>
 
-    <!-- ACTION BUTTONS -->
-    <q-item-section side>
-      <div class="row">
-        <q-btn
-          flat round dense
-          color="green" icon="edit"
-          @click.stop="showDialogForm"/>
-        <q-btn
-          flat round dense
-          color="red" icon="delete"
-          @click.stop="showDialogConfirm"/>
-      </div>
-    </q-item-section>
-
-    <!-- DIALOG FORM -->
-    <q-dialog
-      v-model="dialogForm"
-      persistent
-      transition-show="scale"
-      transition-hide="scale">
-      />
-      <edit-todo-form :id='id' :todo='todo' @closeModal="closeDialogForm" />
-    </q-dialog>
-
-    <!-- DIALOG CONFIRM -->
-    <q-dialog
-      v-model="dialogConfirm"
-      persistent
-      transition-show="scale"
-      transition-hide="scale">
-      <q-card>
-        <q-card-section class="row items-center">
-          <q-icon name="warning" color="primary" text-color="white" size="2rem" />
-          <span class="q-ml-sm">Are you sure you want to delete todo ?</span>
-          <span class="q-ml-sm">This action cannot be reversed.</span>
-        </q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" v-close-popup />
+      <!-- ACTION BUTTONS -->
+      <q-item-section side>
+        <div class="row">
           <q-btn
-            flat
-            label="Yes, Confirm"
-            color="negative"
-            @click.stop="todoDelete({ id: id })"
-            v-close-popup />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+            flat round dense
+            color="green" icon="edit"
+            @click.stop="showDialogForm"/>
+          <q-btn
+            flat round dense
+            color="red" icon="delete"
+            @click.stop="showDialogConfirm"/>
+        </div>
+      </q-item-section>
 
-  </q-item>
+      <!-- DIALOG FORM -->
+      <q-dialog
+        v-model="dialogForm"
+        persistent
+        transition-show="scale"
+        transition-hide="scale">
+        />
+        <edit-todo-form :id='id' :todo='todo' @closeModal="closeDialogForm" />
+      </q-dialog>
+
+      <!-- DIALOG CONFIRM -->
+      <q-dialog
+        v-model="dialogConfirm"
+        persistent
+        transition-show="scale"
+        transition-hide="scale">
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-icon name="warning" color="primary" text-color="white" size="2rem" />
+            <span class="q-ml-sm">Are you sure you want to delete todo ?</span>
+            <span class="q-ml-sm">This action cannot be reversed.</span>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Cancel" color="primary" v-close-popup />
+            <q-btn
+              flat
+              label="Yes, Confirm"
+              color="negative"
+              @click.stop="todoDelete({ id: id })"
+              v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+    </q-item>
+  </transition>
 </template>
 
 <script>
@@ -110,7 +116,7 @@ export default {
     markCompleted() {
       this.todoUpdate({
         id:this.id,
-        updates:{
+        data:{
           status: !this.todo.status
         }
       })
