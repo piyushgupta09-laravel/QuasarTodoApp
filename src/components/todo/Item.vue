@@ -103,10 +103,10 @@ export default {
     ...mapGetters('settings', ["settings"]),
     todoDueTime() {
       if(this.settings.timeFormat) {
-        let raw = this.todo.dueDate + ' ' + this.todo.dueTime;
-        return formatDate(raw, 'h:mm a')
+        return this.todo.dueTime + ' hrs';
       }
-      return this.todo.dueTime + ' hrs';
+      let raw = this.todo.dueDate + ' ' + this.todo.dueTime;
+      return formatDate(raw, 'h:mm a')
     }
   },
   methods: {
