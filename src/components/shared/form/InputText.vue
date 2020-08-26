@@ -1,7 +1,7 @@
 <template>
     <q-input
           outlined
-          autofocus
+          v-select-all
           ref="inputText"
           :value="inputText"
           :label="inputLabel"
@@ -20,7 +20,11 @@
 </template>
 
 <script>
+import { selectAll } from 'src/directives/selectAll';
 export default {
   props: ['inputLabel', 'inputText'],
+  directives: {
+    selectAll
+  }
 }
 </script>

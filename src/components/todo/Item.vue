@@ -4,6 +4,7 @@
     v-ripple
     @click="markCompleted"
     :class="todo.priority"
+    v-touch-hold:1000.mouse="showDialogForm"
   >
     <!-- CHECKBOX -->
     <q-item-section side top>
@@ -15,9 +16,8 @@
       <q-item-label
         class="text-subtitle1"
         :class="{'completed' : todo.status }"
-      >
-        {{ todo.title }}
-      </q-item-label>
+        v-html="$options.filters.searchHighlight(todo.title, search)"
+      />
       <q-item-label caption class="text-uppercase">
         overdue
       </q-item-label>
@@ -26,7 +26,7 @@
     <!-- DUE-DATE & DUE-TIME -->
     <q-item-section side top v-if="todo.dueDate">
       <q-item-label caption>
-        {{ todo.dueDate }}
+        {{ todo.dueDate | shortDate }}
         <q-icon name="event" size="1rem"/>
       </q-item-label>
       <q-item-label caption>
@@ -41,11 +41,11 @@
         <q-btn
           flat round dense
           color="green" icon="edit"
-          @click.stop="dialogForm = true"/>
+          @click.stop="showDialogForm"/>
         <q-btn
           flat round dense
           color="red" icon="delete"
-          @click.stop="dialogConfirm = true"/>
+          @click.stop="showDialogConfirm"/>
       </div>
     </q-item-section>
 
@@ -56,7 +56,7 @@
       transition-show="scale"
       transition-hide="scale">
       />
-      <edit-todo-form :id='id' :todo='todo' @closeModal="dialogForm = false" />
+      <edit-todo-form :id='id' :todo='todo' @closeModal="closeDialogForm" />
     </q-dialog>
 
     <!-- DIALOG CONFIRM -->
@@ -87,7 +87,10 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
+import { date } from 'quasar';
+const { formatDate } = date;
+
 export default {
   props: ['todo', 'id'],
   components: {
@@ -99,6 +102,9 @@ export default {
       dialogForm: false,
     }
   },
+  computed: {
+    ...mapState('todos', ["search"])
+  },
   methods: {
     ...mapActions('todos', ["todoUpdate", "todoDelete"]),
     markCompleted() {
@@ -108,12 +114,39 @@ export default {
           status: !this.todo.status
         }
       })
+    },
+    showDialogForm() {
+      this.dialogForm = true;
+    },
+    closeDialogForm() {
+      this.dialogForm = false;
+    },
+    showDialogConfirm() {
+      this.dialogConfirm = true;
+    }
+  },
+  filters: {
+    shortDate(value) {
+      return formatDate(value, 'D MMM')
+    },
+    searchHighlight(value, query) {
+      if (query) {
+        // Working, but only Case-Sensitive
+        // return value.replace(query, '<span class="highlight">' + query + '</span>');
+        // Solved case-sensitive issue
+        let queryRegExp = new RegExp(query, 'ig');
+        return value.replace(queryRegExp, (match) => {
+          return '<span class="highlight">' + match + '</span>';
+        });
+      } else {
+        return value;
+      }
     }
   }
 }
 </script>
 
-<style>
+<style lang="scss">
 .low {
   background: rgb(255, 255, 255);
 }
@@ -125,5 +158,8 @@ export default {
 }
 .completed {
   text-decoration: line-through;
+}
+.highlight {
+  background: $highlight;
 }
 </style>
