@@ -16,27 +16,17 @@
         <q-checkbox :value="todo.status" />
       </q-item-section>
 
-      <!-- TODO TITLE -->
+      <!-- TITLE, DATE & TIME -->
       <q-item-section>
         <q-item-label
-          class="text-subtitle1"
-          :class="{'completed' : todo.status }"
+          class="text-subtitle1" :class="{'completed' : todo.status }"
           v-html="$options.filters.searchHighlight(todo.title, search)"
         />
-        <q-item-label caption class="text-uppercase">
-          overdue
-        </q-item-label>
-      </q-item-section>
-
-      <!-- DUE-DATE & DUE-TIME -->
-      <q-item-section side top v-if="todo.dueDate">
-        <q-item-label caption>
+        <q-item-label caption v-if="todo.dueDate">
           {{ todo.dueDate | shortDate }}
-          <q-icon name="event" size="1rem"/>
-        </q-item-label>
-        <q-item-label caption>
-          {{ todo.dueTime }}
-          <q-icon name="schedule" size="1rem"/>
+          <span v-if="todo.dueTime">
+            at {{ todoDueTime }}
+          </span>
         </q-item-label>
       </q-item-section>
 
@@ -93,7 +83,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 import { date } from 'quasar';
 const { formatDate } = date;
 
@@ -109,7 +99,15 @@ export default {
     }
   },
   computed: {
-    ...mapState('todos', ["search"])
+    ...mapState('todos', ["search"]),
+    ...mapGetters('settings', ["settings"]),
+    todoDueTime() {
+      if(this.settings.timeFormat) {
+        let raw = this.todo.dueDate + ' ' + this.todo.dueTime;
+        return formatDate(raw, 'h:mm a')
+      }
+      return this.todo.dueTime + ' hrs';
+    }
   },
   methods: {
     ...mapActions('todos', ["todoUpdate", "todoDelete"]),
