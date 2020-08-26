@@ -1,3 +1,5 @@
+import { LocalStorage } from "quasar";
+
 const state = {
   settings: {
     timeFormat: false,
@@ -11,15 +13,31 @@ const mutations = {
   },
   changeSingleList(state, value) {
     state.settings.singleList = value;
+  },
+  setSettings(state, settings) {
+    Object.assign(state.settings, settings);
   }
 };
 
 const actions = {
-  changeTimeFormat({ commit }, value) {
+  changeTimeFormat({ commit, dispatch }, value) {
     commit("changeTimeFormat", value);
+    // OPTION 1 : localStorage.setItem("timeFormat", value);
+    // OPTION 2
+    dispatch("saveSettings");
   },
-  changeSingleList({ commit }, value) {
+  changeSingleList({ commit, dispatch }, value) {
     commit("changeSingleList", value);
+    dispatch("saveSettings");
+  },
+  saveSettings({ state }) {
+    LocalStorage.set("settings", state.settings);
+  },
+  getSettings({ commit }) {
+    let settings = LocalStorage.getItem("settings");
+    if (settings) {
+      commit("setSettings", settings);
+    }
   }
 };
 
