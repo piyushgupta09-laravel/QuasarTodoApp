@@ -1,9 +1,10 @@
 <template>
   <q-page padding>
+    <!-- SETTINGS -->
     <q-list class="q-mb-md" bordered padding>
-
-      <q-item-label header>User Controls</q-item-label>
-
+      <!-- SECTION HEADER -->
+      <q-item-label header>Setting</q-item-label>
+      <!-- TIME FORMAT -->
       <q-item tag="label" v-ripple>
         <q-item-section>
           <q-item-label>Time Format</q-item-label>
@@ -16,7 +17,7 @@
           />
         </q-item-section>
       </q-item>
-
+      <!-- MULTI LIST -->
       <q-item tag="label" v-ripple>
         <q-item-section>
           <q-item-label>Multi List</q-item-label>
@@ -29,30 +30,13 @@
           />
         </q-item-section>
       </q-item>
-
     </q-list>
-
-    <!--
+    <!-- MORE -->
     <q-list bordered padding>
-
+      <!-- SECTION HEADER -->
       <q-item-label header>More</q-item-label>
-
-      <q-item
-        to="/settings/help"
-        tag="label"
-        v-ripple>
-        <q-item-section>
-          <q-item-label>Help</q-item-label>
-        </q-item-section>
-        <q-item-section side >
-          <q-icon name="chevron_right" />
-        </q-item-section>
-      </q-item>
-
-      <q-item
-        @click="visitOurWebsite"
-        tag="label"
-        v-ripple>
+      <!-- WEBSITE -->
+      <q-item @click="visitOurWebsite" tag="label" v-ripple>
         <q-item-section>
           <q-item-label>Visit our website</q-item-label>
         </q-item-section>
@@ -60,11 +44,8 @@
           <q-icon name="chevron_right" />
         </q-item-section>
       </q-item>
-
-      <q-item
-        @click="emailUs"
-        tag="label"
-        v-ripple>
+      <!-- EMAIL -->
+      <q-item @click="emailUs" tag="label" v-ripple>
         <q-item-section>
           <q-item-label>Email us</q-item-label>
         </q-item-section>
@@ -72,15 +53,23 @@
           <q-icon name="chevron_right" />
         </q-item-section>
       </q-item>
-
+      <!-- HELP -->
+      <q-item to="/settings/help" tag="label" v-ripple>
+        <q-item-section>
+          <q-item-label>Help</q-item-label>
+        </q-item-section>
+        <q-item-section side >
+          <q-icon name="chevron_right" />
+        </q-item-section>
+      </q-item>
 		</q-list>
-    -->
 
   </q-page>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { openURL } from 'quasar';
 export default {
   computed: {
     ...mapGetters('settings', ["settings"]),
@@ -103,6 +92,12 @@ export default {
   },
   methods: {
     ...mapActions('settings', ["changeTimeFormat", "changeSingleList"]),
+    visitOurWebsite() {
+      openURL('http://www.google.com')
+    },
+    emailUs() {
+      window.location.href = 'mailto:hello@awesometodo.com?subject=Awesome Todo Feedback'
+    }
   }
 }
 </script>

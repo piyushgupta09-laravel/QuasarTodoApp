@@ -12,14 +12,14 @@ const links = [
     caption: "Change app settings",
     icon: "settings",
     link: "/settings"
-  },
-  {
-    id: 3,
-    title: "Help",
-    caption: "Frequently asked question",
-    icon: "help",
-    link: "/help"
   }
+  // {
+  //   id: 3,
+  //   title: "Help",
+  //   caption: "Frequently asked question",
+  //   icon: "help",
+  //   link: "/help"
+  // }
 ];
 
 const tasks = [
